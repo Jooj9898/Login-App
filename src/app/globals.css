@@ -12,15 +12,52 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
+/* Some basic styling for the body of each page */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Styling for a container that all the forms are placed in */
+.form-container {
+  background-color: var(--background); /* or white/gray/etc */
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(41, 39, 39, 0.1);
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  border: 1px solid #096d2a;
+}
+
+/* Some basic styling for each form */
+.login-form {
+  background-color: #ffffff;
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* Styling for the button to login and register */
+.button {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0;
+  background-color: var(--foreground);
+  color: var(--background);
+  border-radius: 0.5 rem;
+  font-weight: 600;
+  transition: #2f2e2e 0.2s ease;
+  cursor: pointer;
+}
+
+/* Styling that changes the colour for the button when hovering over it */
+.button-hover{
+  background-color: #2f2e2e;
+}
+.registerLink{
+  margin-left: 2rem;
 }

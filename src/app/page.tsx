@@ -1,103 +1,104 @@
+//Author : Justin McGarr
+
+/* Program Description:
+This program builds a simple Node.js web app which allows users to register a new account and/or login by linking the program to firebase authentication. 
+From there the user is redirected to a page where they are greeted by a message and can choose to log out. The program uses client side validation to
+ensure forms are filled out correctly. The program also uses the react-toastify library to display success and error messages to the user. This page.tsx is the
+basic landing page where users can login.
+*/
+
+//Date: 07/04/2025
+
+//client component for firebase
+'use client'
+
+//imports needed for the program to run
+import React, {useState } from 'react';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import {auth} from "./firebase";
+import { toast } from "react-toastify";
 import Image from "next/image";
+import Link from 'next/link';
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+//method that manages the user login process and is exported 
+function LoginUser() {
+    //state variables to set the email and password from user input
+    const [email, setEmail] = useState("");
+    const[password, setPassword] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    //preventing default form submission (refreshing the page)
+    const LoginHandler =  async (e) => {
+        e.preventDefault();
+        try {
+            //built in function from firebase authentication talks to firebase
+            const userCredential = await signInWithEmailAndPassword(auth,email,password);
+            const user = userCredential.user;
+            
+            //if successful, toast (import from react) message displats on screen
+            console.log("user logged in successfully")
+            //on success, user is sent to greeting
+            window.location.href="/home";
+            toast.success("User logged in Successfully", {position: "top-center"});
+        }
+        catch(error)
+        {
+            //if there is an error (e.g. wrong details inputted) message is displayed
+            console.log(error.message);
+            toast.error(error.message, {position: "bottom-center"});
+        }
+    };
+    // function isreturning the JSX to be displayed on the screen
+    return (
+      //grid layout for the page, using tailwind css for styling
+        <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+          <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              //className="dark:invert"
+              src="/Babylon.svg"
+              alt="Babylon Logo"
+              width={450}
+              height={38}
+              priority
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
-}
+            <div className = "form-container">
+            {/*submitting the form calls the handler*/}
+            {/*form is built using basic html and some personal css, with react hooks to set the state of the input fields*/}
+            <form onSubmit ={LoginHandler}>
+                <div>
+                  <label htmlFor="email" className="login-form">
+                    Email
+                  </label>
+                  <input type="email" onChange={(e) =>setEmail(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-[#1a1a1a] dark:border-white/[.145] dark:text-white"
+                  />
+                </div>
+    
+                <div>
+                  <label htmlFor="password" className="login-form">
+                    Password
+                  </label>
+                <input type="password" onChange={(e) =>setPassword(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-[#1a1a1a] dark:border-white/[.145] dark:text-white"
+                  />
+                </div>
+                <button type="submit" className="mt-2 w-full bg-foreground text-background py-2 rounded-lg font-semibold hover:bg-[#383838] dark:hover:bg-[#ccc]">
+                  Log In
+                </button>
+                <div>
+                  {/*user can click this link from the login page to register a new account*/}
+                  <Link href="/register">Dont have an account? Register here</Link>
+                </div>
+              </form>
+            </div>
+            {/* Login form with fields for email and password, which firebase uses for auth */}
+            {/*'required' fields provides error validation using client side*/}
+              
+            </main>
+    
+            <footer>
+            </footer>
+          </div>
+      );
+    }
+    
+    
+//exporting the function so it can be used in other files
+export default LoginUser
