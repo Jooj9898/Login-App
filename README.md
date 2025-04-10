@@ -21,7 +21,7 @@ A fully functional next.js app with a login feature using firebase authenticatio
 <!-- Register -->
 <details>
   <summary>Register a new account</summary>
-  <img src="" alt="Home Page">
+  <img src="https://github.com/Jooj9898/Login-App/blob/master/screenshots/BabylonRegister.png" alt="Register new account">
 </details>
 
 <!-- Home -->
